@@ -1,3 +1,4 @@
+"""
 pyropatch - A monkeypatcher add-on for Pyrogram
 Copyright (C) 2020 Cezar H. <https://github.com/usernein>
 
@@ -15,3 +16,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with pyropatch.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+from .utils import patch, patchable

@@ -1,31 +1,30 @@
-import re 
 import setuptools
 
 with open("README.md", "r") as fp:
     long_description = fp.read()
-    
-with open('requirements.txt') as fp:
+
+with open("requirements.txt") as fp:
     requirements = [line.strip() for line in fp]
 
-with open('pyromod/__init__.py') as fp:
-    version = re.search('__version__ = "(.+?)"', fp.read())[1]
+with open("pyropatch/__init__.py") as fp:
+    version = "2.0.0"
 
 
 setuptools.setup(
-    name="pyromod",
+    name="pyropatch",
     version=version,
-    author="Cezar H.",
+    author="Cezar H. & adityaprasad502",
     license="LGPLv3+",
-    description="A monkeypatcher add-on for Pyrogram",
+    description="A modified pyromod by www.da.gd/aditya",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/usernein/pyromod",
+    url="https://github.com/adityaprasad502/pyropatch",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires=">=3.9",
     install_requires=requirements,
 )
