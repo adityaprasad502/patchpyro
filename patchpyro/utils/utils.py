@@ -1,3 +1,4 @@
+"""
 patchpyro - A monkeypatcher add-on for Pyrogram
 Copyright (C) 2020 Cezar H. <https://github.com/usernein>
 
@@ -15,3 +16,23 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with patchpyro.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+
+def patch(obj):
+    def is_patchable(item):
+        return getattr(item[1], "patchable", False)
+
+    def wrapper(container):
+        for name, func in filter(is_patchable, container.__dict__.items()):
+            old = getattr(obj, name, None)
+            setattr(obj, f"old{name}", old)
+            setattr(obj, name, func)
+        return container
+
+    return wrapper
+
+
+def patchable(func):
+    func.patchable = True
+    return func
