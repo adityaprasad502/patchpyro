@@ -14,7 +14,8 @@ You should have received a copy of the GNU General Public License
 along with patchpyro.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-import asyncio, functools
+import asyncio
+import functools
 from contextlib import suppress
 
 import pyrogram
@@ -69,7 +70,10 @@ class Client:
     @patchable
     def clear_listener(self, chat_id, future):
         with suppress(KeyError):
-            if future == self.listening[chat_id]["future"]:
+            if (
+                chat_id in self.listening
+                and future == self.listening[chat_id]["future"]
+            ):
                 self.listening.pop(chat_id, None)
 
     @patchable

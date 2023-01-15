@@ -69,7 +69,7 @@ Just import it, it will automatically do the monkeypatch and you'll get these ne
 ### For .ask():
 ```python
 ...
-    answer = await client.ask(chat_id, '*Send me your name:*', parse_mode='Markdown')
+    answer = await client.ask(chat_id, '*Send me your name:*', parse_mode=enums.ParseMode.MARKDOWN)
     await client.send_message(chat_id, f'Your name is: {answer.text}')
 ...
 ```

@@ -19,5 +19,5 @@ along with patchpyro.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-__version__ = "2.0.2"
+__version__ = "2.0.3"
 # change in setup.py aswell
