@@ -2,3 +2,10 @@ rmdir dist/*
 rmdir build/*
 python setup.py bdist_wheel
 twine upload --repository pypi dist/*
+
+
+-------------
+
+
+uv build
+uv publish --token $PYPI_TOKEN

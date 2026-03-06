@@ -1,3 +1,5 @@
 patchpyro.egg-info/*
 build/*
 dist/*
+/patchpyro/__pycache__
+*.pyc

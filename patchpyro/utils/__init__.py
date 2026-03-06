@@ -1,8 +1,7 @@
-"""
-patchpyro - A monkeypatcher add-on for Pyrogram
-Copyright (C) 2020 Cezar H. <https://github.com/usernein>
+"""patchpyro - A monkeypatcher add-on for Pyrogram
+Copyright (C) 2026 Aditya Prasad S <https://github.com/adityaprasad502>.
 
-This file is part of patchpyro.
+This file is part of patchpyro and was forked from usernein/pyromod.
 
 patchpyro is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,4 +17,6 @@ You should have received a copy of the GNU General Public License
 along with patchpyro.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from .utils import patch, patchable
+from .utils import patch, patch_into, patchable, should_patch
+
+__all__ = ["patch", "patch_into", "patchable", "should_patch"]

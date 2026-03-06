@@ -2,11 +2,10 @@ import re
 
 import setuptools
 
-with open("README.md", "r") as fp:
+with open("README.md") as fp:
     long_description = fp.read()
 
-with open("requirements.txt") as fp:
-    requirements = [line.strip() for line in fp]
+requirements = ["kurigram>=2.0.69"]
 
 # pyright: reportOptionalSubscript=false
 with open(r"patchpyro\__init__.py") as fp:
@@ -18,8 +17,9 @@ setuptools.setup(
     name="patchpyro",
     version=version,
     author="Cezar H. & adityaprasad502",
+    author_email="plutoniumx502@gmail.com",
     license="LGPLv3+",
-    description="A modified pyromod by www.da.gd/aditya",
+    description="A modified pyromod by a.devh.in",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/adityaprasad502/patchpyro",
@@ -30,5 +30,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.9",
-    install_requires=requirements,
+    install_requires=[
+        "kurigram>=2.0.69",
+    ],
 )

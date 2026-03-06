@@ -5,7 +5,7 @@
 
 # Requirements:
  ~~~python
- pyrogram>=2.0.69
+ kurigram>=2.0.69
  python>=3.9
  ~~~
 
@@ -22,6 +22,8 @@ Example:
 # config.py
 from patchpyro import listen # or import patchpyro.listen
 from pyrogram import Client
+
+patchpyro.thank() # use this if ur linters/ide is removing patchpyro as unused import.
 
 mybot = Client("mysession")
 ```
