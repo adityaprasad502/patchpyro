@@ -23,7 +23,7 @@ Example:
 from patchpyro import listen # or import patchpyro.listen
 from pyrogram import Client
 
-patchpyro.thank() # use this if ur linters/ide is removing patchpyro as unused import.
+listen.thank() # use this if ur linters/ide is removing patchpyro as unused import.
 
 mybot = Client("mysession")
 ```
@@ -78,7 +78,9 @@ Just import it, it will automatically do the monkeypatch and you'll get these ne
 
 
 ### Copyright & License
-This project may include snippets of Pyrogram code
-- Pyrogram - Telegram MTProto API Client Library for Python. Copyright (C) 2017-2022 Dan <<https://github.com/delivrance>>
+This project includes code from:
+- **[kurimod](https://github.com/ohmyarthur/kurimod)**: Monkeypatcher logic and modern async compatibility fixes.
+- **Pyrogram**: Telegram MTProto API Client Library for Python. Copyright (C) 2017-2022 Dan <<https://github.com/delivrance>>
+- **pyromod**: Original conversation patch logic.
 
 Licensed under the terms of the [GNU Lesser General Public License v3 or later (LGPLv3+)](COPYING.lesser)

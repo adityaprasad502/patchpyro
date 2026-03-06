@@ -18,12 +18,7 @@ along with patchpyro.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-__version__ = "2.1.2"
+__version__ = "2.1.3"
 # change in setup.py aswell
 
 from . import listen
-
-
-def thank() -> None:
-    """A dummy function to prevent patchpyro from being removed by formatters and linters. It does nothing, just prints a message to the console to indicate that patchpyro is not an unused import."""
-    # print("Thank you for using patchpyro! If you see this message. author: a.devh.in, version: " + __version__)

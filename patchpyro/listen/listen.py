@@ -2,6 +2,7 @@
 Copyright (C) 2026 Aditya Prasad S <https://github.com/adityaprasad502>.
 
 This file is part of patchpyro and was forked from usernein/pyromod.
+Additional patching logic was adapted from kurimod (C) Dias Arthur.
 
 patchpyro is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

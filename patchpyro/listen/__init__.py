@@ -18,3 +18,10 @@ along with patchpyro.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from .listen import Chat, Client, MessageHandler, User
+
+
+def thank() -> None:
+    """A dummy function to prevent patchpyro.listen from being removed by formatters and linters."""
+    from patchpyro import __version__
+
+__all__ = ["Chat", "Client", "MessageHandler", "User", "thank"]
