@@ -18,7 +18,7 @@ along with patchpyro.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-__version__ = "2.1.3"
+__version__ = "2.1.0"
 # change in setup.py aswell
 
 from . import listen

@@ -49,34 +49,55 @@ class Client:
         self.old__init__(*args, **kwargs)
 
     @should_patch()
-    async def listen(self, chat_id, filters=None, timeout=None):
+    async def listen(
+        self,
+        chat_id: int | str,
+        filters: pyrogram.filters.Filter | None = None,
+        timeout: int | None = None,
+    ) -> pyrogram.types.Message:
         if not isinstance(chat_id, int):
             chat = await self.get_chat(chat_id)
             chat_id = chat.id
 
+        # Cancel existing listener in this chat if any
+        self.cancel_listener(chat_id)
+
         loop = asyncio.get_running_loop()
         future = loop.create_future()
         future.add_done_callback(functools.partial(self.clear_listener, chat_id))
-        self.listening.update({chat_id: {"future": future, "filters": filters}})
+        self.listening[chat_id] = {"future": future, "filters": filters}
+
         return await asyncio.wait_for(future, timeout)
 
     @should_patch()
-    async def ask(self, chat_id, text, filters=None, timeout=None, *args, **kwargs):
+    async def ask(
+        self,
+        chat_id: int | str,
+        text: str,
+        filters: pyrogram.filters.Filter | None = None,
+        timeout: int | None = None,
+        *args,
+        **kwargs,
+    ) -> pyrogram.types.Message:
         request = await self.send_message(chat_id, text, *args, **kwargs)
         response = await self.listen(chat_id, filters, timeout)
         response.request = request
         return response
 
     @should_patch()
-    async def asker(self, chat_id, filters=None, timeout=119):
+    async def asker(
+        self,
+        chat_id: int | str,
+        filters: pyrogram.filters.Filter | None = None,
+        timeout: int = 119,
+    ) -> pyrogram.types.Message | None:
         try:
-            response = await self.listen(chat_id, filters, timeout)
+            return await self.listen(chat_id, filters, timeout)
         except asyncio.TimeoutError:
-            response = None
-        return response
+            return None
 
     @should_patch()
-    def clear_listener(self, chat_id, future) -> None:
+    def clear_listener(self, chat_id: int, future: asyncio.Future) -> None:
         with suppress(KeyError):
             if (
                 chat_id in self.listening
@@ -85,12 +106,13 @@ class Client:
                 self.listening.pop(chat_id, None)
 
     @should_patch()
-    def cancel_listener(self, chat_id) -> None:
+    def cancel_listener(self, chat_id: int) -> None:
         listener = self.listening.get(chat_id)
         if not listener or listener["future"].done():
             return
 
-        listener["future"].set_exception(ListenerCanceled())
+        if not listener["future"].done():
+            listener["future"].set_exception(ListenerCanceled())
         self.clear_listener(chat_id, listener["future"])
 
 
@@ -102,17 +124,19 @@ class MessageHandler:
         self.old__init__(self.resolve_listener, filters)
 
     @should_patch()
-    async def resolve_listener(self, client, message, *args) -> None:
+    async def resolve_listener(self, client: "pyrogram.Client", message: pyrogram.types.Message, *args) -> None:
         listener = client.listening.get(message.chat.id)
         if listener and not listener["future"].done():
             listener["future"].set_result(message)
-        else:
-            if listener and listener["future"].done():
-                client.clear_listener(message.chat.id, listener["future"])
-            await self.user_callback(client, message, *args)
+            raise pyrogram.StopPropagation
+
+        if listener and listener["future"].done():
+            client.clear_listener(message.chat.id, listener["future"])
+
+        await self.user_callback(client, message, *args)
 
     @should_patch()
-    async def check(self, client, update):
+    async def check(self, client: "pyrogram.Client", update: pyrogram.types.Message):
         listener = client.listening.get(update.chat.id)
 
         if listener and not listener["future"].done():
@@ -135,28 +159,28 @@ class MessageHandler:
 @patch_into(pyrogram.types.user_and_chats.chat.Chat)
 class Chat(pyrogram.types.Chat):
     @should_patch()
-    async def listen(self, *args, **kwargs):
+    async def listen(self, *args, **kwargs) -> pyrogram.types.Message:
         return await self._client.listen(self.id, *args, **kwargs)
 
     @should_patch()
-    async def ask(self, *args, **kwargs):
+    async def ask(self, *args, **kwargs) -> pyrogram.types.Message:
         return await self._client.ask(self.id, *args, **kwargs)
 
     @should_patch()
-    async def cancel_listener(self):
+    def cancel_listener(self) -> None:
         return self._client.cancel_listener(self.id)
 
 
 @patch_into(pyrogram.types.user_and_chats.user.User)
 class User(pyrogram.types.User):
     @should_patch()
-    async def listen(self, *args, **kwargs):
+    async def listen(self, *args, **kwargs) -> pyrogram.types.Message:
         return await self._client.listen(self.id, *args, **kwargs)
 
     @should_patch()
-    async def ask(self, *args, **kwargs):
+    async def ask(self, *args, **kwargs) -> pyrogram.types.Message:
         return await self._client.ask(self.id, *args, **kwargs)
 
     @should_patch()
-    async def cancel_listener(self):
+    def cancel_listener(self) -> None:
         return self._client.cancel_listener(self.id)
